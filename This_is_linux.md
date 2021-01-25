@@ -93,15 +93,15 @@
 
 - 보통 /dev/sda1은 SWAP에 mount 되고, /dev/sda2는 '/' 에 마운트 됨
 - df 명령어를 사용하면 마운트 현황을 알 수 있음
-```text
-Filesystem      1K-blocks       Used  Available Use% Mounted on
-/dev/sdb        263174212    5290692  244445364   3% /
-tools           249105148  164725580   84379568  67% /init
-none              6509908          0    6509908   0% /dev
-tmpfs             6512308          0    6512308   0% /sys/fs/cgroup
-none              6512308         16    6512292   1% /run
-C:\             249105148  164725580   84379568  67% /mnt/c
-```
+  ```text
+  Filesystem      1K-blocks       Used  Available Use% Mounted on
+  /dev/sdb        263174212    5290692  244445364   3% /
+  tools           249105148  164725580   84379568  67% /init
+  none              6509908          0    6509908   0% /dev
+  tmpfs             6512308          0    6512308   0% /sys/fs/cgroup
+  none              6512308         16    6512292   1% /run
+  C:\             249105148  164725580   84379568  67% /mnt/c
+  ```
 - WSL의 경우 파일시스템 자체가 C:\ 등으로 나오기도 함.
 - 서버에서는 RAID를 많이 사용함
   - RAID: Redundant Array of Inexpersive/Independent Disks
