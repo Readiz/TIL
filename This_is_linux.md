@@ -37,6 +37,13 @@
 - ls -l [검색할 파일 명]: 하위 폴더까지 재귀적으로 찾아줌..
   - ex: ls -l /dev/sd*
 - halt -p : 시스템 종료
+- which [커맨드 명] : 실행하려는 커맨드 위치가 어디인지 보여줌
+  ```bash
+  readiz@Readiz-NotePC:~$ which bash
+  /usr/bin/bash
+  readiz@Readiz-NotePC:~$ which systemd
+  /usr/bin/systemd
+  ```
 
 ### 서비스란
 
