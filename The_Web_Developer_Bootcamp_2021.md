@@ -46,4 +46,41 @@
     - 콜론(:)이 하나여도 크롬에서 인식이 되긴 하지만 원래는 두개짜리임. 두개짜리는 실제 값이 있는 것처럼 행동하므로 element임
 
 - padding
-  - top, right, down, left 의 순서임.
+
+- Box Model
+  - Box-Sizing: Border-Box
+    - 테두리를 포함하는 Box Model.
+  - Margin
+  - Padding
+    - top, right, bottom, left 의 순서임.
+    - top, right + left, down 순서도 가능
+    - top + bottom, right + left 순서도 가능
+
+- Display Property
+  - Inline - 한 줄에 정렬
+    - 이 경우 width 같은 것들은 무시 됨.
+    - Padding / Margin 도 자신의 줄 안에서만 적용 됨.
+  - Block - 다른 줄에 정렬
+  - Inline-Block - 이 경우 블록의 특성을 가지면서 한 줄에 차례로 들어온다. (그러나 Flex가 있어서 굳이 이젠 써야하나...? 개인적 생각.)
+
+- CSS Units
+  - Relative
+    - EM, REM, VH, VW, %, ...
+  - Absolute
+    - PX, PT, CM, IN, MM
+  - EM
+    - 1em은 부모의 Font-Size와 동일함
+    - 기본 폰트 사이즈는 1em이 될 것 (미설정 시 부모 값을 상속)
+    - h1, h2 시리즈를 이 속성으로 묶어두면 좋을 것.
+  - REM
+    - 중첩된 ul / li를 쓰게 되면 급격한 Font 사이즈 증가 / 감소를 겪게 됨
+    - REM은 root HTML element의 Font size를 가져와서 크기를 정해줌.
+
+- Position
+  - Static: top 같은게 있어도 움직이지 않음
+  - Relative: top 같은게 있으면 상대적으로 움직임
+  - Absolute: 공간을 차지하지 않으면서 Relative가 있는 부모 위치를 상대 좌표로 하여 이동 (어렵..)
+  - Fixed: 스크롤 되어도 이동하지 않음. Container 위치에 고정.
+  - Sticky: 처음엔 다른 속성처럼 이동하다가 스크롤 내려가면 고정.
+
+- Transition

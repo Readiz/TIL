@@ -4,7 +4,7 @@
 
 - https://samsungu.udemy.com/course/electron-react-tutorial/learn/lecture/6986540?start=0#content
 
-## Basic of Electron
+## Basic of Electron⁸
 
 - 플랫폼. 데스크톱 앱을 만들기 위함.
 - 웹 앱은 최근들어 굉장하게 복잡해졌다. Electron은 이러한 특성을 데스크톱 앱에서 사용하기 위해 등장한 플랫폼이라고 보면 됨.
@@ -27,8 +27,12 @@
 - Electron (Run at terminal, Overall Chrome Process로 생각) -> Create MainWindow(BrowserWindow) -> index.html을 로딩.
   - BrowserWindow를 생성하는 로직 또한 js로 작성한다는 점! (타 언어 사용 0%)
 - nodemon을 사용하면 지속적인 F5 키를 눌러야 하는 것을 방지할 수 있음.  -> 자동 시작을 해주는 서버 side에서는 이미 자주 쓰이고 있는 녀석임
-  - `nodemon --watch src/ src/index.js`
-    - 위 명령어는, src/ 디렉토리에서 코드변화가 감지하면 재시작을 하도록 설정하고, src/index.js 를 실행시켜줍니다.
+ - 아래 명령어는, src/js/index.js 디렉토리에서 코드변화가 감지하면 재시작을 하도록 설정.
+  ```js
+    "start": "npm-run-all --parallel watch:webpack watch:nodemon",
+    "watch:webpack": "webpack --config=webpack.config.js --mode=development --watch",
+    "watch:nodemon": "nodemon --exec \"electron .\" --watch \"./src/js/setup.js\""
+  ```
 - Step by Step Guide
   - npm init
   - package.json 생성
@@ -46,6 +50,7 @@
   - `app` 만 실행해서는 사실 아무것도 진행되지 않음!
     - 이후 BrowserWindow를 만들어야 함, 그래야 사용자에게 브라우저가 보이게 된다.
     - `app` 은 처음 로딩이 끝나면 `ready` 이벤트를 가져온다. 그 후 mainWindow를 생성하는 것이 일반적인 Electron App의 패턴.
+    - `app` 에 전체 Main Process의 Life Cycle이 엮여 있다고 보면 됨.
   - BrowserWindow
     - `new BrowserWindow()` 만 해도 바로 뭔가 나온다.
     - 개발자 도구도 바로 튀어나오게 됨 원한다면.
@@ -61,6 +66,8 @@
   - App <-> BrowserWindow 소통 방법?
     - IPC 시스템을 사용함
       - IPC: Inter Process Communication
+    - `const { ipcMain } = require('electron')`
+      - Main 에서 쓰이는 IPC object.
     - `const { ipcRenderer } = require('electron')`
       - 랜더러 프로세스에서 사용하는 IPC
     - `ipcRenderer.send('eventName', 'Data')`
@@ -81,4 +88,41 @@
   - `click` 이벤트가 올 때, `bounds` 객체가 전달된다. 이 객체에 x, y 좌표가 제공됨. 이것을 참고하여 window 의 위치를 조절하면 된다.
   - `mainWindow`에 `setBounds`를 설정하면 지정한 영역에 윈도우를 잘 생성할 수 있다.
   
-  
+## ETC (다른 강의 내용 포함)
+
+- app 의 webContent에 `new-window` 이벤트에 `preventDefault`를 걸어두면 링크에서 새 창이 뜨는 것을 막을 수 있음.
+- session은 모든 browserWindow와 공유 됨. `mainWindow.webContents.session`
+  - `const {session} = require('electron')` 도 같은 값 참조.
+    - `session.defaultSession`
+  - custom session도 만들 수 있긴 하다.
+  - `cookie` 도 `session`의 하위 object 임.
+  - download 도 control 가능하다. (창 안뜨고 자동 다운 가능)
+  - `globalShortcut` : 화면이 떠 있지 않더라도 전체적으로 등록되는 Shortcut
+    - 심지어 앱이 켜져있지 않더라도 실행됨! 그러나 충돌나는 것은 알아서 회피해야 할 것..
+- `const {screen} = require('electron')`을 통해서 스크린에 관련된 모든 데이터를 가져올 수 있음
+  - getAllDisplay(): 전체 연결된 display에 대한 정보들을 가져올 수 있다.
+    - touchSupport 등등 포함..
+- Main Process가 BrowserWindow를 소유하며, Browser Window는 Renderer Process 그 자체다.
+  - Main Process는 여러개의 BrowserWindow를 소유한다.
+- BrowserWindow는 webFrame > webContents 를 소유한다.
+  - ex) Zoom Factor
+- `electron.desktopCapturer`: 데스크탑의 화면을 저장 가능함
+- `process.version`: 각 버전을 가지고 있음..
+  - ex) chrome, napi, electron, v8, opensssl 등등..
+- `process.hang()`: Renderer를 Hang을 걸 수 있음.
+- `process.crash()`: crash 될 때를 시뮬레이팅 할 수 있음.
+  - 이 때 reload 걸면 복구될 수 있음. 복구 되는게 낫나?..
+- 몇몇 electron API들은 Shared API로, renderer와 main 모두에게서 쓰일 수 있음. (ex: `shell` 등..)
+  - electron.remote 안써도 된다는 뜻
+
+## Distribution
+
+- Electron-Builder 가 진리.
+  - cli 옵션도 지원한다. 어떤 platform으로 distribute 할지는 이걸로 결정
+  - 결과물은 dist 디렉토리에 제공됨.
+- 제대로 하려면 code-signing도 해야 함. (아마 mac은 더 강제되는듯?)
+- Electron-Builder에 이미 AutoUpdater가 있다.
+  - GitHub 를 통해 배포하려면, Personal access token을 발급받아야 한다.
+  - 이를 등록하면, 빌드 후 자동으로 GitHub release에 올려버릴 수 있음. (이미 만들어진 tag를 참조해서 올리는 듯?)
+- (참고) setx 커맨드를 윈도우에서 사용하면 환경변수를 잠시 설정할 수 있다.
+- 자동 업데이트는 electron-updater와 함께~
