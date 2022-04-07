@@ -371,3 +371,20 @@
     fi
     exit 0
     ```
+
+
+# 리눅스 입문자를 위한 명령어 사전
+- by 가와구치 히로시
+
+## Chapter 06. 편리한 명령어 사용법
+
+### 명령어 입출력을 파일로 전환
+- ps > pslog
+```bash
+readiz@Readiz-NotePC:/mnt/e/collected/selfdev/git/baekjoon/class/extra/20211127$ ps > pslog
+readiz@Readiz-NotePC:/mnt/e/collected/selfdev/git/baekjoon/class/extra/20211127$ cat pslog
+  PID TTY          TIME CMD
+1339 pts/2    00:00:00 bash
+14658 pts/2    00:00:00 p
+```
+- `date >> datelog`: `>>` 를 쓰면 Append 명령어임
